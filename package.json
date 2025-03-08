@@ -1,0 +1,196 @@
+{
+	"name": "insertseq-zh",
+	"version": "0.10.1-zh",
+	"publisher": "zh-community",
+	"displayName": "插入序列(中文版)",
+	"description": "在VSCode文本文档中插入各种序列（数字、字母、表达式等）- 原作者Volker Dobler的插件汉化版",
+	"author": {
+		"name": "zh-community",
+		"url": "https://github.com/zh-community"
+	},
+	"originalAuthor": {
+		"name": "Volker Dobler",
+		"url": "https://github.com/volkerdobler"
+	},
+	"keywords": [
+		"sequences",
+		"numbers",
+		"insert",
+		"alphachars",
+		"expressions",
+		"frequencies",
+		"chinese",
+		"translation"
+	],
+	"activationEvents": [],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/volkerdobler/insertnums/issues",
+		"email": "vscode.insertnums.ext@volker-dobler.de"
+	},
+	"homepage": "https://github.com/volkerdobler/insertnums/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/volkerdobler/insertnums.git"
+	},
+	"engines": {
+		"vscode": "^1.93.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "插入序列",
+			"properties": {
+				"insertseq.historyLimit": {
+					"type": "number",
+					"default": 100,
+					"description": "历史记录的最大数量，0表示无限制"
+				},
+				"insertseq.editHistory": {
+					"type": "boolean",
+					"default": false,
+					"description": "历史记录中的项目是否可编辑（默认：false）"
+				},
+				"insertseq.start": {
+					"type": "string",
+					"default": "1",
+					"description": "默认起始值"
+				},
+				"insertseq.step": {
+					"type": "string",
+					"default": "1",
+					"description": "默认增量值"
+				},
+				"insertseq.cast": {
+					"type": "string",
+					"default": "s",
+					"description": "默认替换函数 [S = 字符串, I = 整数, F = 浮点数, B = 布尔值]"
+				},
+				"insertseq.centerString": {
+					"type": "string",
+					"default": "l",
+					"enum": [
+						"l",
+						"r"
+					],
+					"enumdescription": [
+						"l (默认): 例如，1个字符的字符串在4个字符的字段中居中时靠左",
+						"r: 例如，1个字符的字符串在4个字符的字段中居中时靠右"
+					]
+				},
+				"insertseq.minMonthLength": {
+					"type": "number",
+					"default": 3,
+					"description": "识别月份的字符串最小长度（例如 四月 => 2）"
+				},
+				"insertseq.language": {
+					"type": "string",
+					"default": "zh-CN",
+					"description": "月份的默认语言格式"
+				},
+				"insertseq.languageFormat": {
+					"type": "string",
+					"default": "s",
+					"enum": [
+						"l",
+						"s"
+					],
+					"enumdescription": [
+						"s (默认): 月份仅显示简称（例如 1月）",
+						"l: 月份显示全称（例如 一月）"
+					]
+				},
+				"insertseq.insertOrder": {
+					"type": "string",
+					"default": "cursor",
+					"description": "默认插入顺序",
+					"enum": [
+						"cursor",
+						"sorted"
+					],
+					"enumdescription": [
+						"cursor (默认): 插入基于多光标点击顺序",
+						"sorted: 插入从最上方的点击向下（使用选项'!'可以反向）"
+					]
+				},
+				"insertseq.dateStepUnit": {
+					"type": "string",
+					"default": "d",
+					"description": "默认日期步进单位",
+					"enum": [
+						"d",
+						"w",
+						"m",
+						"y"
+					],
+					"enumdescription": [
+						"d (默认): 天",
+						"w: 周",
+						"m: 月",
+						"y: 年"
+					]
+				},
+				"insertseq.dateFormat": {
+					"type": "string",
+					"default": "yyyy-MM-dd",
+					"description": "默认日期格式"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "extension.insertSeq",
+				"title": "插入序列"
+			},
+			{
+				"command": "extension.insertSeq.showHistory",
+				"title": "显示插入序列历史记录"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.insertSeq",
+				"key": "ctrl+alt+.",
+				"mac": "cmd+alt+.",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "extension.insertSeq.showHistory",
+				"key": "ctrl+alt+,",
+				"mac": "cmd+alt+,",
+				"when": "editorTextFocus"
+			}
+		]
+	},
+	"scripts": {
+		"compile": "npm run check-types && node esbuild.js",
+		"check-types": "tsc --noEmit",
+		"watch": "npm-run-all -p watch:*",
+		"watch:esbuild": "node esbuild.js --watch",
+		"watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+		"vscode:prepublish": "npm run package",
+		"package": "npm run check-types && node esbuild.js --production"
+	},
+	"devDependencies": {
+		"@types/d3-format": "^2.0.5",
+		"@types/node": "^20.12.11",
+		"@types/vscode": "^1.89.0",
+		"esbuild": "^0.24.0",
+		"eslint": "^9.2.0",
+		"npm-run-all": "^4.1.5",
+		"prettier": "^3.2.5",
+		"ts-loader": "^9.5.1"
+	},
+	"icon": "insertnums-zh.png",
+	"galleryBanner": {
+		"color": "#5757ff",
+		"theme": "dark"
+	},
+	"dependencies": {
+		"d3-format": "^2.0.0",
+		"date-fns": "^3.6.0"
+	}
+}
